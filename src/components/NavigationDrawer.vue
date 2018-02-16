@@ -78,7 +78,7 @@
         drawer: this.drawerMostrar,
         drawerItens: [
           { cabecalho: 'Relatos' },
-          { icone: 'book', texto: 'Todos os relatos', rota: '/', desabilitar: false },
+          { icone: 'book', texto: 'Todos os relatos', rota: '/home', desabilitar: false },
           {
             icone: 'keyboard_arrow_up',
             iconeAlternativo: 'keyboard_arrow_down',
