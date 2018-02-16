@@ -77,11 +77,16 @@ new Vue({
 
   created() {
     firebase.initializeApp(firebaseConfig);
+
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.$router.push({ name: 'auth-sucess' });
+        this.$router.push({ name: 'home' });
       } else {
         this.$router.push({ name: 'singup' });
+        this.$router.push(
+          { name: 'singup', params: { showLogin: true } },
+        );
       }
     });
   },
