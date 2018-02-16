@@ -7,7 +7,7 @@
             <v-card v-if="!cartoesLista.length" flat height="100%" color="transparent">
                 <v-card-text>
                     <div class="text-xs-center">
-                        <v-icon x-large color="iconLight">fa-book</v-icon>
+                        <v-icon x-large color="iconLight">fa fa-book</v-icon>
                         <p class="textBackgroundLight--text" style="font-size: 1.25em">
                             <br/>
                             Nada aqui!
@@ -96,7 +96,7 @@
     import ButtonAction from '@/components/ButtonAction';
 
     export default {
-      name: 'telaPrincipal',
+      name: 'home',
       components: {
         ButtonAction,
       },
