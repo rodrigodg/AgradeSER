@@ -3,6 +3,9 @@
 import Vuetify from 'vuetify';
 import 'vuetify/dist/vuetify.min.css';
 
+// Importar Firebase e Firebase config
+import * as firebase from 'firebase';
+import firebaseConfig from '@/helpers/firebaseConfig';
 import Vue from 'vue';
 import App from './App';
 import router from './router';
@@ -71,4 +74,15 @@ new Vue({
   router,
   components: { App },
   template: '<App/>',
+
+  created() {
+    firebase.initializeApp(firebaseConfig);
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.$router.push({ name: 'auth-sucess' });
+      } else {
+        this.$router.push({ name: 'singup' });
+      }
+    });
+  },
 });
