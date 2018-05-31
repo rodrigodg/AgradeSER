@@ -19,7 +19,11 @@ class RelatoService {
       throw new NotReadyException();
     }
 
-    relatoRepository.addNovoRelato(userUtils.getUserId(), relato);
+    try {
+      return relatoRepository.addNovoRelato(userUtils.getUserId(), relato);
+    } catch (e) {
+      throw e;
+    }
   }
 }
 

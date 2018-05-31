@@ -31,12 +31,11 @@ class RelatoRepository extends Repository {
     }
     const relatosRef = RelatoRepository._getUserRelatosCollectionReference(userId);
 
-    relatosRef.add(relato.getData())
-      .then((docRef) => {
-        console.log('Suuucesso:', docRef);
-      })
+    return relatosRef.add(relato.getData())
       .catch((error) => {
-        console.error(error);
+        // eslint-disable-next-line no-console
+        console.error('Erro ao adicionar um novo relato', error);
+        throw Error(error);
       });
   }
 }
