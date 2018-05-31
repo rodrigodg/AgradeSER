@@ -230,7 +230,6 @@
 
           try {
             relatoService.addNovoRelato(relato).then(() => {
-              console.log('Aqui');
               EventBus.$emit('toaster', {
                 texto: 'Relato Salvo com sucesso',
                 cor: 'success',
