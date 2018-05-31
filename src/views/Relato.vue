@@ -237,7 +237,7 @@
               this.$router.push('/home');
             });
           } catch (e) {
-            EventBus.$emit('tooster', {
+            EventBus.$emit('toaster', {
               texto: 'Ops! Algo eu errado, tente novamente',
               cor: 'warning',
             });
