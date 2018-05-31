@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import relatoRepository from '@/repository/RelatoRepository';
 import servicesUtils from '@/utils/ServicesUtils';
 import userUtils from '@/utils/UserUtils';
@@ -18,6 +19,9 @@ class RelatoService {
     if (!servicesUtils.isUsuarioLogadoEFirebaseInicializado()) {
       throw new NotReadyException();
     }
+
+    // Adiciona a hora da criação no relato
+    relato.createdAt = new Date();
 
     try {
       return relatoRepository.addNovoRelato(userUtils.getUserId(), relato);
