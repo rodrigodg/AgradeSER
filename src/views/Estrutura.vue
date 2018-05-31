@@ -18,6 +18,13 @@
     </v-content>
     <footer>
     </footer>
+    <!-- Toast -->
+    <toast
+      :toast-mostrar="toast.mostrar"
+      :cor="toast.cor"
+      :texto="toast.texto"
+      @toast-atualizar="toastAtualizar"
+    />
   </v-container>
 </template>
 
@@ -27,12 +34,10 @@
   import Footer from '@/components/Footer';
   import NavigationDrawer from '@/components/NavigationDrawer';
   import Toolbar from '@/components/Toolbar';
-
-
-  /* Import Propriedades */
+  import Toast from '@/components/Toast';
 
   // LayoutProps lida com as propriedades de Layout
-  import { LayoutProps } from '@/main';
+  import EventBus, { LayoutProps } from '@/main';
 
   export default {
     name: 'Estrutura',
@@ -40,9 +45,15 @@
       Footer,
       NavigationDrawer,
       Toolbar,
+      Toast,
     },
     data: () => ({
       drawerMostrar: false,
+      toast: {
+        mostrar: false,
+        cor: '',
+        texto: '',
+      },
     }),
     methods: {
 
@@ -63,6 +74,22 @@
       drawerAtualizarDoFilho(value) {
         this.drawerMostrar = this.drawerMostrarPorBreakpoint() || value;
       },
+
+      /* Toast */
+
+      toastAtualizar(value) {
+        this.toast.mostrar = value;
+      },
+    },
+
+    mounted() {
+      // Ouve o evento de click no icone salvar da toolbar
+      const vm = this;
+      EventBus.$on('toaster', (value) => {
+        vm.toast.mostrar = true;
+        vm.toast.cor = value.cor;
+        vm.toast.texto = value.texto;
+      });
     },
 
   };
