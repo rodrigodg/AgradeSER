@@ -3,9 +3,13 @@
 import Vuetify from 'vuetify';
 import 'vuetify/dist/vuetify.min.css';
 
+// Importar Firebase e Firebase config
+import * as firebase from 'firebase';
+import firebaseConfig from '@/config/firebaseConfig';
 import Vue from 'vue';
-import App from './App';
-import router from './router';
+import App from '@/App';
+import router from '@/router';
+import store from '@/vuex/store';
 
 
 /* Vuetify */
@@ -61,6 +65,13 @@ const LayoutProps = {
 export { LayoutProps };
 
 
+/* Firebase */
+const firebaseApp = firebase.initializeApp(firebaseConfig);
+const firestore = firebase.firestore();
+firestore.settings({ timestampsInSnapshots: true });
+export const db = firebaseApp.firestore();
+
+
 /* Vue */
 
 Vue.config.productionTip = false;
@@ -69,6 +80,35 @@ Vue.config.productionTip = false;
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>',
+
+  created() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        /* Armazena dados do usuário no Vuex */
+        store.commit('user', {
+          displayName: user.displayName,
+          email: user.email,
+          photoUrl: user.photoURL,
+          uid: user.uid,
+        });
+
+        this.$router.push({ name: 'home' });
+      } else {
+        /* Deleta dados do usuário no Vuex */
+        store.commit('user', {
+          displayName: '',
+          email: '',
+          photoUrl: '',
+          uid: '',
+        });
+
+        this.$router.push(
+          { name: 'singup' },
+        );
+      }
+    });
+  },
 });

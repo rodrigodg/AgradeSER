@@ -7,7 +7,7 @@
             <v-card v-if="!cartoesLista.length" flat height="100%" color="transparent">
                 <v-card-text>
                     <div class="text-xs-center">
-                        <v-icon x-large color="iconLight">fa-book</v-icon>
+                        <v-icon x-large color="iconLight">fa fa-book</v-icon>
                         <p class="textBackgroundLight--text" style="font-size: 1.25em">
                             <br/>
                             Nada aqui!
@@ -34,27 +34,30 @@
                             <!-- Texto -->
                             <v-card-text class="v-card-text">
 
-                                <!-- Relato -->
-                                <div class="body-1 ellipsis">
-                                    <span class="caption grey--text text--darken-3">{{cartao.data}}</span>
-                                    -
-                                   {{ cartao.relato }}
+                              <!-- Relato -->
+                              <div class="body-1 ellipsis">
+                                  <span v-if="cartao.data" class="caption grey--text text--darken-3">{{cartao.data}} - </span>
+                                 {{ cartao.conteudo }}
 
-                                </div>
+                              </div>
 
-                                <!-- Pessoas -->
+                              <!-- Pessoas -->
+                              <div v-if="false">
                                 <br/>
                                 <v-icon>person</v-icon>
                                 <template v-for="pessoa in cartao.pessoas">
-                                    <v-chip color="cartaoChip" small>{{pessoa}}</v-chip>
+                                  <v-chip color="cartaoChip" small>{{pessoa}}</v-chip>
                                 </template>
+                              </div>
 
-                                <!-- Tags -->
+                              <!-- Tags -->
+                              <div v-if="false">
                                 <br/>
                                 <v-icon>local_offer</v-icon>
                                 <template v-for="tag in cartao.tags">
-                                    <v-chip color="cartaoChip" small>{{tag}}</v-chip>
+                                  <v-chip color="cartaoChip" small>{{tag}}</v-chip>
                                 </template>
+                              </div>
 
                             </v-card-text>
 
@@ -62,7 +65,7 @@
                             <v-card-actions>
                                 <v-layout row justify-space-around>
                                     <template v-for="botaoRodape in cartaoBotoesRodape">
-                                        <v-flex>
+                                        <v-flex class="text-xs-center">
                                             <v-btn flat :disabled="botaoRodape.desabilitado">
                                                 <v-icon color="iconLight">
                                                     {{ botaoRodape.icone }}
@@ -94,34 +97,20 @@
 <script>
 
     import ButtonAction from '@/components/ButtonAction';
+    import relatoService from '@/services/RelatoService';
 
     export default {
-      name: 'telaPrincipal',
+      name: 'home',
       components: {
         ButtonAction,
       },
       data: () => ({
-        cartoesLista: [
-          {
-            titulo: 'Um dia como um outro qualquer',
-            relato: 'Hoje foi um dia como outro qualquer, sem nada de novo e nada a mencionar',
-            data: '10/05/10',
-            pessoas: ['João', 'Paulo', 'Menezes'],
-            tags: ['dia', 'qualquer'],
-          },
-          {
-            titulo: 'Segundo Titulo',
-            relato: 'Segundo Relato',
-            data: '05/10/05',
-            pessoas: ['SegPri', 'SegSeg'],
-            tags: ['Seg', 'SegTer'],
-          },
-        ],
+        cartoesLista: [],
         cartaoBotoesRodape: [
-          {
+          /* {
             icone: 'mdi-book-open-variant',
             desabilitado: true,
-          },
+          }, */
           {
             icone: 'mode_edit',
             desabilitado: true,
@@ -139,6 +128,18 @@
         relato() {
           this.$router.push('/relato');
         },
+      },
+
+      mounted() {
+        try {
+          relatoService.getTodosRelatos().then((relatos) => {
+            this.cartoesLista = relatos;
+          });
+        } catch (e) {
+          if (e.name !== 'NotReadyException') {
+            throw e;
+          }
+        }
       },
     };
 </script>

@@ -9,8 +9,16 @@
 <template>
     <v-container fluid>
 
+      <!-- Intensidade de Emoção -->
+      <v-flex xs12 sm6 lg6>
+        <v-slider
+          label="Intensidade da Emoção"
+          v-model="form.intensidadeDaEmocao"
+          color="accent"/>
+      </v-flex>
+
         <!-- Titulo -->
-        <v-flex xs10 sm3 lg3>
+        <v-flex v-if="false" xs10 sm3 lg3>
             <v-text-field
                     name="titulo"
                     label="Título"
@@ -31,7 +39,7 @@
         </v-flex>
 
         <!-- Date Picker -->
-        <v-flex xs8 sm6 lg3>
+        <v-flex v-if="false"  xs8 sm6 lg3>
             <v-dialog
                     persistent
                     lazy
@@ -68,7 +76,7 @@
         </v-flex>
 
         <!-- Selecionar Pessoas -->
-        <v-flex xs12 sm7 lg7>
+        <v-flex v-if="false"  xs12 sm7 lg7>
             <v-select
                     label="Quem estava com você?"
                     chips
@@ -91,7 +99,7 @@
         </v-flex>
 
         <!-- Selecionar Tags -->
-        <v-flex xs12 sm7 lg7>
+        <v-flex v-if="false"  xs12 sm7 lg7>
             <v-select
                     chips
                     tags
@@ -129,10 +137,13 @@
     /* Import Components */
     import Toast from '@/components/Toast';
 
-    /* Import Propriedades */
+    /* Import Classes */
+    import Relato from '@/models/Relato';
 
     // EventBus - lida com as mensagens entre componentes não parentais
     import EventBus from '@/main';
+
+    import relatoService from '@/services/RelatoService';
 
     //  Moment.js - Manipula datas
     const moment = require('moment');
@@ -168,6 +179,7 @@
             error: false,
             rules: '',
           },
+          intensidadeDaEmocao: 50,
           data: null,
           pessoasChips: [],
           tagsChips: [],
@@ -224,20 +236,22 @@
 
         /* Salvar Formulario */
         formularioSalvar() {
-          /*
-            const dados = {
-            titulo: this.form.titulo.texto,
+          const dados = {
+            // titulo: this.form.titulo.texto,
             relato: this.form.relato.texto,
-            data: this.form.data ? this.form.data : this.getDataHoje('en'),
-            pessoas: this.form.pessoasChips,
-            tags: this.form.tagsChips,
+            // data: this.form.data ? this.form.data : this.getDataHoje('en'),
+            // pessoas: this.form.pessoasChips,
+            // tags: this.form.tagsChips,
+            intensidadeDaEmocao: this.form.intensidadeDaEmocao,
           };
-          */
 
+          const relato = new Relato(dados.relato, dados.intensidadeDaEmocao);
+
+          relatoService.addNovoRelato(relato);
 
           /* Toast e Avisos */
 
-          const completo = this.form.titulo.texto && this.form.relato.texto;
+          const completo = this.form.intensidadeDaEmocao && this.form.relato.texto;
           if (completo) {
             this.toast.texto = 'Salvo';
             this.toast.cor = 'success';
