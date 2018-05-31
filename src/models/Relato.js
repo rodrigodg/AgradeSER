@@ -4,6 +4,7 @@ class Relato {
     this.conteudo = conteudo;
     this.intensidadeDaEmocao = intensidadeDaEmocao;
     this.id = opcionais ? opcionais.id : undefined;
+    this.createdAt = opcionais ? opcionais.createdAt : undefined;
   }
 
   /* Getters and Setters */
@@ -17,6 +18,18 @@ class Relato {
       throw new Error('Propriedade id deve ser uma string ou undefined.');
     } else {
       this._id = valor;
+    }
+  }
+
+  get createdAt() {
+    return this._createdAt;
+  }
+
+  set createdAt(valor) {
+    if (!(valor instanceof Date) && typeof valor !== 'undefined') {
+      throw new Error('Propriedade createdAt deve ser um Date() ou undefined.');
+    } else {
+      this._createdAt = valor;
     }
   }
 
@@ -52,6 +65,7 @@ class Relato {
     return {
       conteudo: this.conteudo,
       intensidadeDaEmocao: this.intensidadeDaEmocao,
+      createdAt: this.createdAt,
     };
   }
 }

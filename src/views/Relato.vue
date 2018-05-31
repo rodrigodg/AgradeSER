@@ -230,7 +230,6 @@
 
           try {
             relatoService.addNovoRelato(relato).then(() => {
-              console.log('Aqui');
               EventBus.$emit('toaster', {
                 texto: 'Relato Salvo com sucesso',
                 cor: 'success',
@@ -238,7 +237,7 @@
               this.$router.push('/home');
             });
           } catch (e) {
-            EventBus.$emit('tooster', {
+            EventBus.$emit('toaster', {
               texto: 'Ops! Algo eu errado, tente novamente',
               cor: 'warning',
             });
