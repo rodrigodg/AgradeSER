@@ -20,9 +20,6 @@ service cloud.firestore {
         request.resource.data.intensidadeDaEmocao is number;
         //resource.data.data is timestamp;
 
-        // Como validar match em objetos?
-        //resource.data.pessoas is object &&
-        //resource.data.tags is object;
     }
   }
 }
