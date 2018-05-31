@@ -14,15 +14,12 @@ service cloud.firestore {
       // Autenticação
       // Validação dos campos
       allow write: if request.auth.uid == usuario &&
-        request.resource.data.keys().hasAll(["conteudo", "intensidadeDaEmocao"]) &&
-        request.resource.data.size() == 2 &&
+        request.resource.data.keys().hasAll(["conteudo", "intensidadeDaEmocao", "createdAt"]) &&
+        request.resource.data.size() == 3 &&
         request.resource.data.conteudo is string &&
-        request.resource.data.intensidadeDaEmocao is number;
-        //resource.data.data is timestamp;
+        request.resource.data.intensidadeDaEmocao is number &&
+        request.resource.data.createdAt is timestamp;
 
-        // Como validar match em objetos?
-        //resource.data.pessoas is object &&
-        //resource.data.tags is object;
     }
   }
 }

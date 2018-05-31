@@ -121,21 +121,10 @@
             </v-select>
         </v-flex>
 
-        <!-- Toast -->
-        <toast
-                :toast-mostrar="toast.mostrar"
-                :cor="toast.cor"
-                :texto="toast.texto"
-                @toast-atualizar="toastAtualizar"
-        />
-
     </v-container>
 </template>
 
 <script>
-
-    /* Import Components */
-    import Toast from '@/components/Toast';
 
     /* Import Classes */
     import Relato from '@/models/Relato';
@@ -150,19 +139,11 @@
 
     export default {
       name: 'relato',
-      components: {
-        Toast,
-      },
       data: () => ({
 
         /* Configuração View */
         iconeSalvar: 'save',
         datePickerModal: '',
-        toast: {
-          mostrar: false,
-          cor: '',
-          texto: '',
-        },
 
         /* Formatos */
         locale: 'pt-BR',
@@ -247,27 +228,20 @@
 
           const relato = new Relato(dados.relato, dados.intensidadeDaEmocao);
 
-          relatoService.addNovoRelato(relato);
-
-          /* Toast e Avisos */
-
-          const completo = this.form.intensidadeDaEmocao && this.form.relato.texto;
-          if (completo) {
-            this.toast.texto = 'Salvo';
-            this.toast.cor = 'success';
-          } else {
-            this.toast.texto = 'Ops!';
-            this.toast.cor = 'warning';
+          try {
+            relatoService.addNovoRelato(relato).then(() => {
+              EventBus.$emit('toaster', {
+                texto: 'Relato Salvo com sucesso',
+                cor: 'success',
+              });
+              this.$router.push('/home');
+            });
+          } catch (e) {
+            EventBus.$emit('toaster', {
+              texto: 'Ops! Algo eu errado, tente novamente',
+              cor: 'warning',
+            });
           }
-
-          this.toast.mostrar = true;
-        },
-
-
-        /* Toast */
-
-        toastAtualizar(value) {
-          this.toast.mostrar = value;
         },
 
       },

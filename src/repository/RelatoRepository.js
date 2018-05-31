@@ -10,13 +10,17 @@ class RelatoRepository extends Repository {
 
   /* Retorna todos os relatos do usuário */
   static async getTodosRelatos(userId) {
-    const relatosRef = RelatoRepository._getUserRelatosCollectionReference(userId);
+    const relatosRef =
+      RelatoRepository._getUserRelatosCollectionReference(userId)
+        .orderBy('createdAt', 'desc');
 
     return relatosRef.get().then((querySnapshot) => {
       const lista = [];
       querySnapshot.forEach((doc) => {
         lista.push(
-          new Relato(doc.data().conteudo, doc.data().intensidadeDaEmocao, { id: doc.id }),
+          new Relato(doc.data().conteudo, doc.data().intensidadeDaEmocao, {
+            id: doc.id,
+          }),
         );
       });
       return lista;
@@ -29,17 +33,16 @@ class RelatoRepository extends Repository {
     if (!(relato instanceof Relato)) {
       throw Error('relato deve ser um objeto Relato');
     }
-    const relatosRef = RelatoRepository._getUserRelatosCollectionReference(userId);
+    const relatosRef = RelatoRepository
+      ._getUserRelatosCollectionReference(userId);
 
-    relatosRef.add(relato.getData())
-      .then((docRef) => {
-        console.log('Suuucesso:', docRef);
-      })
+    return relatosRef.add(relato.getData())
       .catch((error) => {
-        console.error(error);
+        // eslint-disable-next-line no-console
+        console.error('Erro ao adicionar um novo relato', error);
+        throw Error(error);
       });
   }
 }
-
 
 export default RelatoRepository;
