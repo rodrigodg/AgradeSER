@@ -1,21 +1,33 @@
-# diario_plus
+# AgradeSER
 
-> A Vue.js project
+Um sistema web para a prática de gratitude writing.
+
+O AgradeSER é um Progressive Web App sobre uma infraestrutura Serverless.
+
+Este é um trabalho em progresso.
 
 ## Build Setup
 
 ``` bash
-# install dependencies
+# instalar dependências
 npm install
 
-# serve with hot reload at localhost:8080
+# servir com hot reload em localhost:8080
 npm run dev
 
-# build for production with minification
+# build para produção com minificação
 npm run build
 
-# build for production and view the bundle analyzer report
+# build para produção e visualizar o analyzer report
 npm run build --report
 ```
 
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+Para explicações detalhadas e como as coisas funcionam, acesse o [guia](http://vuejs-templates.github.io/webpack/) e [docs para vue-loader](http://vuejs.github.io/vue-loader).
+
+
+## Licença
+* Proprietária
+
+## Contato
+* Email: [alan.taranti@gmail.com](mailto:alan.taranti@gmail.com)
+* Website: [alantaranti.github.io](http://alantaranti.github.io)
