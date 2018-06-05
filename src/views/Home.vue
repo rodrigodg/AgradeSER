@@ -67,7 +67,7 @@
                       <v-layout row justify-space-around>
                         <template v-for="botaoRodape in cartaoBotoesRodape">
                           <v-flex class="text-xs-center">
-                            <v-btn flat :disabled="botaoRodape.desabilitado">
+                            <v-btn flat :disabled="botaoRodape.desabilitado" @click="acaoRelato(botaoRodape.id, cartao)">
                               <v-icon color="iconLight">
                                 {{ botaoRodape.icone }}
                               </v-icon>
@@ -115,12 +115,14 @@
             desabilitado: true,
           }, */
           {
+            id: 'EDITAR',
             icone: 'mode_edit',
             desabilitado: true,
           },
           {
+            id: 'REMOVER',
             icone: 'delete',
-            desabilitado: true,
+            desabilitado: false,
           },
         ],
       }),
@@ -130,6 +132,20 @@
 
         relato() {
           this.$router.push('/relato');
+        },
+
+        acaoRelato(acao, relato) {
+          switch (acao) {
+            case 'REMOVER':
+              this.removerRelato(relato);
+              break;
+            default:
+              break;
+          }
+        },
+
+        removerRelato(relato) {
+          relatoService.removerRelato(relato);
         },
       },
 
