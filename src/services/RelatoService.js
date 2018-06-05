@@ -29,6 +29,19 @@ class RelatoService {
       throw e;
     }
   }
+
+  static removerRelato(relato) {
+    // Se o usuário não está logado ou o firebase não está inicializado, retorna nulo
+    if (!servicesUtils.isUsuarioLogadoEFirebaseInicializado()) {
+      throw new NotReadyException();
+    }
+
+    try {
+      return relatoRepository.removerRelato(userUtils.getUserId(), relato);
+    } catch (e) {
+      throw e;
+    }
+  }
 }
 
 

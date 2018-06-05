@@ -8,6 +8,11 @@ class RelatoRepository extends Repository {
     return Repository.getUserDocumentReference(userId).collection('relatos');
   }
 
+  /* Retorna a referencia da coleção */
+  static _getUserRelatoDocumentReference(userId, relato) {
+    return RelatoRepository._getUserRelatosCollectionReference(userId).doc(relato.id);
+  }
+
   /* Retorna todos os relatos do usuário */
   static async getTodosRelatos(userId) {
     const relatosRef =
@@ -40,6 +45,23 @@ class RelatoRepository extends Repository {
       .catch((error) => {
         // eslint-disable-next-line no-console
         console.error('Erro ao adicionar um novo relato', error);
+        throw Error(error);
+      });
+  }
+
+  /* Deletar um relato */
+  static async removerRelato(userId, relato) {
+    /* Se não receber um relato, gera uma exceção */
+    if (!(relato instanceof Relato)) {
+      throw Error('relato deve ser um objeto Relato');
+    }
+    const relatoRef = RelatoRepository
+      ._getUserRelatoDocumentReference(userId, relato);
+
+    return relatoRef.delete()
+      .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.error('Erro ao remover um novo relato', error);
         throw Error(error);
       });
   }
