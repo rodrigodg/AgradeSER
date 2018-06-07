@@ -1,6 +1,6 @@
 <template>
 
-    <v-container fluid :grid-list-lg="relatosLista.length" :fill-height="!relatosLista.length">
+    <v-container fluid :grid-list-lg="relatosLista.length" :fill-height="!relatosLista.length" style="padding: 0;">
 
       <!-- Dialog -->
       <v-dialog v-model="dialog" max-width="290">
