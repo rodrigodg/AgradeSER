@@ -9,8 +9,8 @@ class RelatoRepository extends Repository {
   }
 
   /* Retorna a referencia da coleção */
-  static _getUserRelatoDocumentReference(userId, relato) {
-    return RelatoRepository._getUserRelatosCollectionReference(userId).doc(relato.id);
+  static _getUserRelatoDocumentReference(userId, relatoId) {
+    return RelatoRepository._getUserRelatosCollectionReference(userId).doc(relatoId);
   }
 
   /* Retorna todos os relatos do usuário */
@@ -50,13 +50,9 @@ class RelatoRepository extends Repository {
   }
 
   /* Deletar um relato */
-  static async removerRelato(userId, relato) {
-    /* Se não receber um relato, gera uma exceção */
-    if (!(relato instanceof Relato)) {
-      throw Error('relato deve ser um objeto Relato');
-    }
+  static async removerRelato(userId, relatoId) {
     const relatoRef = RelatoRepository
-      ._getUserRelatoDocumentReference(userId, relato);
+      ._getUserRelatoDocumentReference(userId, relatoId);
 
     return relatoRef.delete()
       .catch((error) => {

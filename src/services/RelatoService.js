@@ -37,7 +37,7 @@ class RelatoService {
     }
 
     try {
-      return relatoRepository.removerRelato(userUtils.getUserId(), relato);
+      return relatoRepository.removerRelato(userUtils.getUserId(), relato.id);
     } catch (e) {
       throw e;
     }
