@@ -1,6 +1,19 @@
 <template>
 
     <v-container fluid :grid-list-lg="relatosLista.length" :fill-height="!relatosLista.length">
+
+      <!-- Dialog -->
+      <v-dialog v-model="dialog" max-width="290">
+        <v-card>
+          <v-card-title class="headline">Tem certeza que você quer excluir o relato?</v-card-title>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="error" flat="flat" @click.native="removerRelato()">Excluir</v-btn>
+            <v-btn color="success" flat="flat" @click.native="dialog = false">Cancelar</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
         <v-flex xs12 sm8 lg8 offset-sm2 offset-lg2 align-center>
 
           <div v-if="relatosReady">
@@ -110,6 +123,7 @@
         ButtonAction,
       },
       data: () => ({
+        dialog: false,
         relatosReady: false,
         relatosLista: [],
         relatoBotoesRodape: [
@@ -128,6 +142,7 @@
             desabilitado: false,
           },
         ],
+        relatoParaRemocao: null,
       }),
       methods: {
 
@@ -140,16 +155,22 @@
         acaoRelato(acao, relato) {
           switch (acao) {
             case 'REMOVER':
-              this.removerRelato(relato);
+              this.confirmarRemocaoDeRelato(relato);
               break;
             default:
               break;
           }
         },
 
-        removerRelato(relato) {
-          relatoService.removerRelato(relato).then(() => {
-            this.relatosLista = this.relatosLista.filter(r => r !== relato);
+        confirmarRemocaoDeRelato(relato) {
+          this.relatoParaRemocao = relato;
+          this.dialog = true;
+        },
+
+        removerRelato() {
+          this.dialog = false;
+          relatoService.removerRelato(this.relatoParaRemocao).then(() => {
+            this.relatosLista = this.relatosLista.filter(r => r !== this.relatoParaRemocao);
             EventBus.$emit('toaster', {
               texto: 'Relato removido com sucesso',
               cor: 'success',
