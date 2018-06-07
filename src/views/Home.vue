@@ -101,6 +101,9 @@
     import ButtonAction from '@/components/ButtonAction';
     import relatoService from '@/services/RelatoService';
 
+    // EventBus - lida com as mensagens entre componentes não parentais
+    import EventBus from '@/main';
+
     export default {
       name: 'home',
       components: {
@@ -145,7 +148,13 @@
         },
 
         removerRelato(relato) {
-          relatoService.removerRelato(relato);
+          relatoService.removerRelato(relato).then(() => {
+            EventBus.$emit('toaster', {
+              texto: 'Relato removido com sucesso',
+              cor: 'success',
+            });
+          },
+          );
         },
       },
 
