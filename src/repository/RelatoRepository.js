@@ -32,6 +32,17 @@ class RelatoRepository extends Repository {
     });
   }
 
+  /* Retorna o relato informado pelo usuário */
+  static async getRelato(userId, relatoId) {
+    const relatoRef =
+      RelatoRepository._getUserRelatoDocumentReference(userId, relatoId);
+
+    return relatoRef.get().then(doc =>
+      new Relato(doc.data().conteudo, doc.data().intensidadeDaEmocao, {
+        id: doc.id,
+      }));
+  }
+
   /* Adiciona um novo relato */
   static async addNovoRelato(userId, relato) {
     /* Se não receber um relato, gera uma exceção */
