@@ -149,6 +149,7 @@
 
         removerRelato(relato) {
           relatoService.removerRelato(relato).then(() => {
+            this.relatosLista = this.relatosLista.filter(r => r !== relato);
             EventBus.$emit('toaster', {
               texto: 'Relato removido com sucesso',
               cor: 'success',
