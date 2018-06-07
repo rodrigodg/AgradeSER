@@ -1,11 +1,24 @@
 <template>
 
-    <v-container fluid :grid-list-lg="cartoesLista.length" :fill-height="!cartoesLista.length">
+    <v-container fluid :grid-list-lg="relatosLista.length" :fill-height="!relatosLista.length" style="padding: 0;">
+
+      <!-- Dialog -->
+      <v-dialog v-model="dialog" max-width="290">
+        <v-card>
+          <v-card-title class="headline">Tem certeza que você quer excluir o relato?</v-card-title>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="error" flat="flat" @click.native="removerRelato()">Excluir</v-btn>
+            <v-btn color="success" flat="flat" @click.native="dialog = false">Cancelar</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
         <v-flex xs12 sm8 lg8 offset-sm2 offset-lg2 align-center>
 
-          <div v-if="cartoesReady">
+          <div v-if="relatosReady">
             <!-- Cartão default, caso não haja nenhum relato -->
-            <v-card v-if="!cartoesLista.length" flat height="100%" color="transparent">
+            <v-card v-if="!relatosLista.length" flat height="100%" color="transparent">
               <v-card-text>
                 <div class="text-xs-center">
                   <v-icon x-large color="iconLight">fa fa-book</v-icon>
@@ -21,7 +34,7 @@
             <v-layout v-else row wrap>
 
               <!-- Itera pela lista de cartões -->
-              <template v-for="cartao in cartoesLista">
+              <template v-for="cartao in relatosLista">
 
                 <v-flex xs12>
 
@@ -65,9 +78,9 @@
                     <!-- Ações do Cartão -->
                     <v-card-actions>
                       <v-layout row justify-space-around>
-                        <template v-for="botaoRodape in cartaoBotoesRodape">
+                        <template v-for="botaoRodape in relatoBotoesRodape">
                           <v-flex class="text-xs-center">
-                            <v-btn flat :disabled="botaoRodape.desabilitado">
+                            <v-btn flat :disabled="botaoRodape.desabilitado" @click="acaoRelato(botaoRodape.id, cartao)">
                               <v-icon color="iconLight">
                                 {{ botaoRodape.icone }}
                               </v-icon>
@@ -101,28 +114,35 @@
     import ButtonAction from '@/components/ButtonAction';
     import relatoService from '@/services/RelatoService';
 
+    // EventBus - lida com as mensagens entre componentes não parentais
+    import EventBus from '@/main';
+
     export default {
       name: 'home',
       components: {
         ButtonAction,
       },
       data: () => ({
-        cartoesReady: false,
-        cartoesLista: [],
-        cartaoBotoesRodape: [
+        dialog: false,
+        relatosReady: false,
+        relatosLista: [],
+        relatoBotoesRodape: [
           /* {
             icone: 'mdi-book-open-variant',
             desabilitado: true,
           }, */
           {
+            id: 'EDITAR',
             icone: 'mode_edit',
             desabilitado: true,
           },
           {
+            id: 'REMOVER',
             icone: 'delete',
-            desabilitado: true,
+            desabilitado: false,
           },
         ],
+        relatoParaRemocao: null,
       }),
       methods: {
 
@@ -131,13 +151,40 @@
         relato() {
           this.$router.push('/relato');
         },
+
+        acaoRelato(acao, relato) {
+          switch (acao) {
+            case 'REMOVER':
+              this.confirmarRemocaoDeRelato(relato);
+              break;
+            default:
+              break;
+          }
+        },
+
+        confirmarRemocaoDeRelato(relato) {
+          this.relatoParaRemocao = relato;
+          this.dialog = true;
+        },
+
+        removerRelato() {
+          this.dialog = false;
+          relatoService.removerRelato(this.relatoParaRemocao).then(() => {
+            this.relatosLista = this.relatosLista.filter(r => r !== this.relatoParaRemocao);
+            EventBus.$emit('toaster', {
+              texto: 'Relato removido com sucesso',
+              cor: 'success',
+            });
+          },
+          );
+        },
       },
 
       mounted() {
         try {
           relatoService.getTodosRelatos().then((relatos) => {
-            this.cartoesLista = relatos;
-            this.cartoesReady = true;
+            this.relatosLista = relatos;
+            this.relatosReady = true;
           });
         } catch (e) {
           if (e.name !== 'NotReadyException') {

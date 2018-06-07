@@ -11,10 +11,14 @@
 
       <!-- Intensidade de Emoção -->
       <v-flex xs12 sm6 lg6>
-        <v-slider
-          label="Intensidade da Emoção"
-          v-model="form.intensidadeDaEmocao"
-          color="accent"/>
+        <v-card flat color="transparent" class="input-group">
+          <v-subheader style="padding-left: 0; padding-right: 0;"><label style="max-width: 100%;">Intensidade da Emoção</label></v-subheader>
+          <v-card-text style="padding-left: 0; padding-right: 0; padding-top: 0;">
+            <v-slider
+              v-model="form.intensidadeDaEmocao"
+              color="accent"/>
+          </v-card-text>
+        </v-card>
       </v-flex>
 
         <!-- Titulo -->
@@ -217,6 +221,11 @@
 
         /* Salvar Formulario */
         formularioSalvar() {
+          // Se o relato estiver vazio, não executa nenhuma ação
+          if (this.form.relato.texto === '') {
+            return;
+          }
+
           const dados = {
             // titulo: this.form.titulo.texto,
             relato: this.form.relato.texto,
@@ -231,7 +240,7 @@
           try {
             relatoService.addNovoRelato(relato).then(() => {
               EventBus.$emit('toaster', {
-                texto: 'Relato Salvo com sucesso',
+                texto: 'Relato salvo com sucesso',
                 cor: 'success',
               });
               this.$router.push('/home');
@@ -239,7 +248,7 @@
           } catch (e) {
             EventBus.$emit('toaster', {
               texto: 'Ops! Algo eu errado, tente novamente',
-              cor: 'warning',
+              cor: 'error',
             });
           }
         },

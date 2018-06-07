@@ -40,6 +40,8 @@ class Relato {
   set conteudo(valor) {
     if (typeof valor !== 'string') {
       throw new Error('Propriedade conteúdo deve ser uma string.');
+    } else if (valor === '') {
+      throw new Error('Propriedade conteúdo não pode ser vazia.');
     } else {
       this._conteudo = valor;
     }
