@@ -217,6 +217,11 @@
 
         /* Salvar Formulario */
         formularioSalvar() {
+          // Se o relato estiver vazio, não executa nenhuma ação
+          if (this.form.relato.texto === '') {
+            return;
+          }
+
           const dados = {
             // titulo: this.form.titulo.texto,
             relato: this.form.relato.texto,
