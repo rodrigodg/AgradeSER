@@ -7,7 +7,7 @@
 -->
 
 <template>
-    <v-container fluid>
+    <div>
 
       <!-- Intensidade de Emoção -->
       <v-flex xs12 sm6 lg6>
@@ -125,7 +125,7 @@
             </v-select>
         </v-flex>
 
-    </v-container>
+    </div>
 </template>
 
 <script>
