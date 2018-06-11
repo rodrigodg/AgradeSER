@@ -100,7 +100,7 @@
               { icone: 'add', texto: 'Adicionar', id: 'tag_add', desabilitar: true },
             ],
           },
-          { cabecalho: 'Diario Plus' },
+          { cabecalho: 'AgradeSER' },
           { icone: 'settings', texto: 'Configurações', id: 'settings', desabilitar: true },
           { icone: 'chat_bubble', texto: 'Enviar feedback', id: 'feedback', desabilitar: true },
         ],
